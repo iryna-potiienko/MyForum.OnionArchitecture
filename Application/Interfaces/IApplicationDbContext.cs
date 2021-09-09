@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using MyForum.Models;
 
 namespace Application.Interfaces
@@ -11,5 +13,8 @@ namespace Application.Interfaces
         DbSet<UserProfile> UserProfiles { get; set; }
         DbSet<UserRole> UserRoles { get; set; }
         DbSet<UserRoleMapping> UserRoleMappings { get; set; }
+        
+        Task<int> SaveChangesAsync();
+        EntityEntry Entry(object entity);
     }
 }

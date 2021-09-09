@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using MyForum.Models;
 
-namespace MyForum.Models
+namespace Model.Model
 {
     public class Chapter
     {

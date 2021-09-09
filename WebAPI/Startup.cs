@@ -1,18 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Application;
+using Domain.Mapper;
+using Domain.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Persistence;
+using Persistence.Repository;
 
 namespace WebAPI
 {
@@ -30,9 +26,36 @@ namespace WebAPI
         {
             //services.AddApplication();
             services.AddPersistence(Configuration);
-            
+
+            InitServices(services);
+
+            InitRepositories(services);
+
+            InitMappers(services);
+
             services.AddControllers();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "WebAPI", Version = "v1"}); });
+        }
+
+        private static void InitServices(IServiceCollection services)
+        {
+            services.AddScoped<ChapterService>();
+            services.AddScoped<SubjectService>();
+            services.AddScoped<MessageService>();
+        }
+
+        private static void InitRepositories(IServiceCollection services)
+        {
+            services.AddScoped<ChapterRepository>();
+            services.AddScoped<SubjectRepository>();
+            services.AddScoped<MessageRepository>();
+        }
+
+        private static void InitMappers(IServiceCollection services)
+        {
+            services.AddScoped<ChapterMapper>();
+            services.AddScoped<SubjectMapper>();
+            services.AddScoped<MessageMapper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

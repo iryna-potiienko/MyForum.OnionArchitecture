@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using Model.Model;
+
 //using System.ComponentModel.DataAnnotations;
 
 namespace MyForum.Models
@@ -11,11 +14,14 @@ namespace MyForum.Models
             Messages = new List<Message>();
         }
         public int Id { get; set; }
+        [Required]
         public string Name { get; set; }
         //[Display(Name = "Text of your question")]
+        [Required]
         public string QuestionText { get; set; }
-        public DateTime TimeSent { get; set; }
+        public DateTime CreatedAt { get; set; }
         
+        [Required]
         public int ChapterId { get; set; }
         public int UserId { get; set; }
         

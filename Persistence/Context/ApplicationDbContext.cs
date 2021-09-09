@@ -1,22 +1,31 @@
-﻿using Application.Interfaces;
+﻿using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Model.Model;
 using MyForum.Models;
 
 namespace Persistence.Context
 {
     public class ApplicationDbContext: DbContext, IApplicationDbContext
     {
-        public virtual DbSet<Chapter> Chapters { get; set; }
-        public virtual DbSet<Subject> Subjects { get; set; }
-        public virtual DbSet<Message> Messages { get; set; }
-        public virtual DbSet<UserProfile> UserProfiles { get; set; }
-        public virtual DbSet<UserRole> UserRoles { get; set; }
-        public virtual DbSet<UserRoleMapping> UserRoleMappings { get; set; }
+        public DbSet<Chapter> Chapters { get; set; }
+        public DbSet<Subject> Subjects { get; set; }
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<UserProfile> UserProfiles { get; set; }
+
+        public async Task<int> SaveChangesAsync()
+        {
+            return await base.SaveChangesAsync();
+        }
+
+        public void SaveChanges()
+        {
+            base.SaveChanges();
+        }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             :base(options)
         {
-            //Database.EnsureCreated();
+            Database.EnsureCreated();
         }
     }
 }
