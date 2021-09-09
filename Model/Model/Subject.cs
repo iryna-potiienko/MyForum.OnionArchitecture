@@ -5,7 +5,7 @@ using Model.Model;
 
 //using System.ComponentModel.DataAnnotations;
 
-namespace MyForum.Models
+namespace Model.Model
 {
     public class Subject
     {

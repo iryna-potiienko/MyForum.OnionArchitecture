@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using MyForum.Models;
 
 namespace Model.Model
 {

@@ -1,5 +1,5 @@
 ﻿using Model.Dto;
-using MyForum.Models;
+using Model.Model;
 
 namespace Domain.Mapper
 {

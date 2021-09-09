@@ -6,7 +6,6 @@ using Domain.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Model.Dto;
-using MyForum.Models;
 using Persistence;
 
 namespace WebAPI.Controller

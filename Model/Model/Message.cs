@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 //using System.ComponentModel.DataAnnotations;
 
-namespace MyForum.Models
+namespace Model.Model
 {
     public class Message
     {

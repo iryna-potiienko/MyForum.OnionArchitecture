@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Model.Model;
-using MyForum.Models;
 using Persistence.Context;
 
 namespace MyForum.Controllers

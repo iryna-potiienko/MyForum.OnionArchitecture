@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using MyForum.Models;
+using Model.Model;
 
 namespace Persistence.Repository
 {

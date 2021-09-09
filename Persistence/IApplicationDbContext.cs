@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Model.Model;
-using MyForum.Models;
 
 namespace Persistence
 {
