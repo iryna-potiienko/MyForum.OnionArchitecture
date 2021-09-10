@@ -26,7 +26,12 @@ namespace WebAPI.Controller
         public async Task<ActionResult<MessageDto>> Create(MessageDto messageDto)
         {
             var created = _messageService.Create(messageDto);
-            
+            if (created == null)
+            {
+                //ModelState.AddModelError("","Error");
+                return BadRequest("Cannot create a message");
+            }
+
             return CreatedAtAction("GetMessage", new { id = created.Id }, created);
         }
         

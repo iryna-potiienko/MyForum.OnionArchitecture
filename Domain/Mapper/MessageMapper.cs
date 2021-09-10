@@ -13,7 +13,7 @@ namespace Domain.Mapper
                 MessageText = messageDto.MessageText,
                 CreatedAt = messageDto.CreatedAt,
                 SubjectId = messageDto.SubjectId,
-                UserId = messageDto.UserId
+                UserName = messageDto.UserName
             };
             return message;
         }
@@ -26,7 +26,7 @@ namespace Domain.Mapper
                 MessageText = message.MessageText,
                 CreatedAt = message.CreatedAt,
                 SubjectId = message.SubjectId,
-                UserId = message.UserId
+                UserName = message.UserName
             };
             return messageDto;
         }

@@ -14,5 +14,7 @@ namespace Model.Dto
         public int UserId { get; set; }
         [Required]
         public int SubjectId { get; set; }
+
+        public string UserName { get; set; }
     }
 }

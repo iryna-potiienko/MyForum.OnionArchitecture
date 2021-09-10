@@ -14,7 +14,7 @@ namespace Domain.Mapper
                 QuestionText = subjectDto.QuestionText,
                 CreatedAt = subjectDto.CreatedAt,
                 ChapterId = subjectDto.ChapterId,
-                UserId = subjectDto.UserId
+                UserName = subjectDto.UserName
             };
             return subject;
         }
@@ -28,7 +28,7 @@ namespace Domain.Mapper
                 QuestionText = subject.QuestionText,
                 CreatedAt = subject.CreatedAt,
                 ChapterId = subject.ChapterId,
-                UserId = subject.UserId
+                UserName = subject.UserName
             };
             return subjectDto;
         }

@@ -1,13 +1,14 @@
 ﻿
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Model.Model;
 using Persistence.Context;
 
 namespace Persistence
 {
-    //todo rename me
-    public static class DependencyInjection
+    public static class DatabaseDependencies
     {
         public static void AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
@@ -16,6 +17,9 @@ namespace Persistence
                     configuration.GetConnectionString("DefaultConnection"),
                     b => b.MigrationsAssembly("WebApplication1.Migrations")));
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
+            
+            services.AddIdentity<UserProfile, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
         }
     }
 }

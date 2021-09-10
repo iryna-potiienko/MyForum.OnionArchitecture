@@ -20,9 +20,9 @@ namespace Domain.Service
                 public MessageDto Create(MessageDto messageDto)
                 {
                     var message = _messageMapper.MapToMessage(messageDto);
-        
+                    
                     var createdMessage = _messageRepository.Create(message);
-                    return _messageMapper.MapToMessageDto(createdMessage.Result);
+                    return createdMessage.Result==null ? null : _messageMapper.MapToMessageDto(createdMessage.Result);
                 }
         
                 public List<MessageDto> GetAll()
@@ -50,7 +50,7 @@ namespace Domain.Service
                     message.MessageText = messageDto.MessageText;
                     message.CreatedAt = messageDto.CreatedAt;
                     message.SubjectId = messageDto.SubjectId;
-                    message.UserId = messageDto.UserId;
+                    message.UserName = messageDto.UserName;
         
                     _messageRepository.Update(message);
                     return false;

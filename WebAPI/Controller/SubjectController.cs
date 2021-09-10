@@ -22,6 +22,11 @@ namespace WebAPI.Controller
         public async Task<ActionResult<SubjectDto>> Create(SubjectDto subjectDto)
         {
             var created = _subjectService.Create(subjectDto);
+            if (created == null)
+            {
+                //ModelState.AddModelError("","Error");
+                return BadRequest("Cannot create a subject");
+            }
             
             return CreatedAtAction("GetSubject", new { id = created.Id }, created);
         }

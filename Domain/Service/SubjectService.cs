@@ -24,7 +24,7 @@ namespace Domain.Service
             var subject = _subjectMapper.MapToSubject(subjectDto);
 
             var createdChapter = _subjectRepository.Create(subject);
-            return _subjectMapper.MapToSubjectDto(createdChapter.Result);
+            return createdChapter.Result == null ? null : _subjectMapper.MapToSubjectDto(createdChapter.Result);
         }
 
         public List<SubjectDto> GetAll()
@@ -53,7 +53,7 @@ namespace Domain.Service
             subject.QuestionText = subjectDto.QuestionText;
             subject.CreatedAt = subjectDto.CreatedAt;
             subject.ChapterId = subjectDto.ChapterId;
-            subject.UserId = subjectDto.UserId;
+            subject.UserName = subjectDto.UserName;
 
             _subjectRepository.Update(subject);
             return false;

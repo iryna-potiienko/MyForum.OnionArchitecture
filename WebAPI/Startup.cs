@@ -2,11 +2,12 @@ using Domain.Mapper;
 using Domain.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Model.Model;
 using Persistence;
 using Persistence.Repository;
 
@@ -34,6 +35,11 @@ namespace WebAPI
             InitMappers(services);
 
             services.AddControllers();
+            
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                );
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "WebAPI", Version = "v1"}); });
         }
 
@@ -42,6 +48,7 @@ namespace WebAPI
             services.AddScoped<ChapterService>();
             services.AddScoped<SubjectService>();
             services.AddScoped<MessageService>();
+            services.AddScoped<UserProfileService>();
         }
 
         private static void InitRepositories(IServiceCollection services)
@@ -49,6 +56,7 @@ namespace WebAPI
             services.AddScoped<ChapterRepository>();
             services.AddScoped<SubjectRepository>();
             services.AddScoped<MessageRepository>();
+            services.AddScoped<UserProfileRepository>();
         }
 
         private static void InitMappers(IServiceCollection services)
@@ -56,6 +64,7 @@ namespace WebAPI
             services.AddScoped<ChapterMapper>();
             services.AddScoped<SubjectMapper>();
             services.AddScoped<MessageMapper>();
+            services.AddScoped<UserProfileMapper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -72,6 +81,7 @@ namespace WebAPI
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });

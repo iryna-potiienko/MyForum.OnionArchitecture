@@ -16,6 +16,7 @@ namespace Model.Dto
         public DateTime CreatedAt { get; set; }
         [Required]
         public int ChapterId { get; set; }
-        public int UserId { get; set; }
+        [Required]
+        public string UserName { get; set; }
     }
 }

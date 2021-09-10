@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Model.Model;
@@ -16,6 +17,17 @@ namespace Persistence.Repository
         
         public async Task<Subject> Create(Subject subject)
         {
+            var chapter = await _context.Chapters.FindAsync(subject.ChapterId);
+            
+            var userProfile =  _context.UserProfiles.FirstOrDefault(m => m.UserName==subject.UserName);
+            if (chapter==null)
+            {
+                return null;
+            }
+            if (userProfile==null)
+            {
+                return null;
+            }
             _context.Subjects.Add(subject);
             await _context.SaveChangesAsync();
 

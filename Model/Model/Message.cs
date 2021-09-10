@@ -9,11 +9,11 @@ namespace Model.Model
     {
         public int Id { get; set; }
         
-        [Required(ErrorMessage = "Cannot be empty")]
+        [Required]
         public string MessageText { get; set; }
         public DateTime CreatedAt { get; set; }
         
-        public int UserId { get; set; }
+        public string UserName { get; set; }
         [Required]
         public int SubjectId { get; set; }
         

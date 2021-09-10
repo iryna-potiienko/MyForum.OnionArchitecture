@@ -29,7 +29,7 @@ namespace WebAPI.Controller
         }
         
         [HttpGet("List")]
-        public List<ChapterDto> GetCAll()
+        public List<ChapterDto> GetAll()
         {
             return _chapterService.GetAll();
         }
