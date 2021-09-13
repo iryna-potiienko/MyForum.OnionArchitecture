@@ -40,7 +40,7 @@ namespace WebAPI.Controller
         
         [AllowAnonymous]
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<ChapterDto>> GetChapter([Required] int id)
+        public async Task<ActionResult<ChapterDto>> GetChapter(int id)
         {
             var chapterDto = _chapterService.GetChapter(id);
             if (chapterDto == null)
@@ -53,7 +53,7 @@ namespace WebAPI.Controller
         
         [Authorize(Roles = "admin")]
         [HttpPut("{id}/Update")]
-        public async Task<IActionResult> PutChapter(int id, [Required] ChapterDto chapterDto)
+        public async Task<IActionResult> PutChapter(int id, ChapterDto chapterDto)
         {
             var updated = _chapterService.UpdateChapter(id, chapterDto);
             if(updated)
