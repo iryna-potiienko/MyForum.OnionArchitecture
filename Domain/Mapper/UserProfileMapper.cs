@@ -1,4 +1,6 @@
-﻿using Model.Dto;
+﻿using System.Collections;
+using System.Collections.Generic;
+using Model.Dto;
 using Model.Model;
 
 namespace Domain.Mapper
@@ -9,9 +11,9 @@ namespace Domain.Mapper
         {
             var userProfileDto = new UserProfileDto()
             {
+                Id = userProfile.Id,
                 UserName = userProfile.UserName,
                 Email = userProfile.Email
-                //Password
             };
 
 
@@ -22,10 +24,9 @@ namespace Domain.Mapper
         {
             var userProfile = new UserProfile()
             {
+                Id = userProfileDto.Id,
                 UserName = userProfileDto.UserName,
-                Email = userProfileDto.Email,
-                //PasswordHash = userProfileDto.Password
-                
+                Email = userProfileDto.Email
             };
 
 

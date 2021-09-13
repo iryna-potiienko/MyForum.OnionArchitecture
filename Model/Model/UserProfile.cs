@@ -11,7 +11,7 @@ namespace Model.Model
             Messages = new List<Message>();
         }
         
-        public string Role { get; set; }
+        //public IList<string> Roles { get; set; }
         
         public virtual ICollection<Subject> Subjects { get; set; }
         public virtual ICollection<Message> Messages { get; set; }

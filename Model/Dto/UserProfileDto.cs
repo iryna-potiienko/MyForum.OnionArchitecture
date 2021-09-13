@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Model.Dto
 {
     public class UserProfileDto
     {
+        public string Id { get; set; }
         [Required]
         public string Email { get; set; }
         [Required]
@@ -11,6 +13,8 @@ namespace Model.Dto
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+        
+        public IList<string> Roles { get; set; }
 
     }
 }

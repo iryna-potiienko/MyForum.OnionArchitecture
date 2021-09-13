@@ -14,16 +14,11 @@ namespace WebAPI.Controller
     [ApiController]
     public class ProfileController : ControllerBase
     {
-        private readonly UserManager<UserProfile> _userManager;
-        private readonly SignInManager<UserProfile> _signInManager;
- 
         private readonly UserProfileService _userProfileService;
 
-        public ProfileController(UserProfileService userProfileService,UserManager<UserProfile> userManager, SignInManager<UserProfile> signInManager)
+        public ProfileController(UserProfileService userProfileService)
         {
             _userProfileService = userProfileService;
-            _userManager = userManager;
-            _signInManager = signInManager;
         }
 
         [HttpPost("Register")]
@@ -75,6 +70,18 @@ namespace WebAPI.Controller
             }
         
             return userDto;
+        }
+
+        [HttpPost("ChangeRole/{username}")]
+        public async Task<IActionResult> ChangeUserRole(string username, List<string> userRoles)
+        {
+            var result = await _userProfileService.ChangeUserRole(username, userRoles);
+            if (result)
+            {
+                return Ok();
+            }
+
+            return NotFound();
         }
     }
 }
