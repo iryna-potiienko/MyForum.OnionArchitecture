@@ -41,12 +41,12 @@ namespace Domain.Service
             return userProfileDto;
         }
 
-        public UserProfileDto CreateUserProfile(UserProfileDto userProfileDto)
+        public UserProfileDto CreateUserProfile(UserProfileRegisterDto registerDto)
         {
             //UserProfile user = new UserProfile() {Email = userProfileDto.Email, UserName = userProfileDto.UserName};
-            var userProfile = _userProfileMapper.MapToUserProfile(userProfileDto);
+            var userProfile = _userProfileMapper.MapToUserProfileFromRegistration(registerDto);
 
-            var createdUserProfile = _userProfileRepository.CreateUserProfile(userProfile, userProfileDto.Password);
+            var createdUserProfile = _userProfileRepository.CreateUserProfile(userProfile, registerDto.Password);
             if (createdUserProfile.Result == null)
             {
                 return null;
@@ -55,12 +55,14 @@ namespace Domain.Service
             return _userProfileMapper.MapToUserProfileDto(createdUserProfile.Result);
         }
 
-        public bool Login(UserProfileDto dto)
+        public UserProfileDto Login(LoginUserProfileDto dto)
         {
-            var userProfile = _userProfileMapper.MapToUserProfile(dto);
-            var loginSuccess = _userProfileRepository.LoginUserProfile(userProfile, dto.Password);
+            var userProfileDto = GetUserProfile(dto.UserName);
             
-            return loginSuccess.Result;
+            var userProfile = _userProfileMapper.MapToUserProfile(userProfileDto);
+            var loginSuccess = _userProfileRepository.LoginUserProfile(userProfile, dto.Password);
+
+            return (loginSuccess.Result != null) ? _userProfileMapper.MapToUserProfileDto(loginSuccess.Result) : null;
         }
 
         public void Logout()

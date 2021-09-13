@@ -32,5 +32,25 @@ namespace Domain.Mapper
 
             return userProfile;
         }
+
+        public UserProfile MapToUserProfileFromRegistration(UserProfileRegisterDto registerDto)
+        {
+            var userProfile = new UserProfile()
+            {
+                UserName = registerDto.UserName,
+                Email = registerDto.Email
+            };
+
+            return userProfile;
+        }
+        public UserProfile MapToUserProfileFromLogin(LoginUserProfileDto loginDto)
+        {
+            var userProfile = new UserProfile()
+            {
+                UserName = loginDto.UserName
+            };
+
+            return userProfile;
+        }
     }
 }

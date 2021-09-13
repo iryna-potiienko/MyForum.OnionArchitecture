@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Domain.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Model.Dto;
@@ -22,26 +23,26 @@ namespace WebAPI.Controller
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register(UserProfileDto dto)
+        public async Task<IActionResult> Register(UserProfileRegisterDto dto)
         {
             var created = _userProfileService.CreateUserProfile(dto);
 
             if (created == null)
             {
-                return Unauthorized();
+                return BadRequest();
             }
 
             return CreatedAtAction("GetUser", new {username = created.UserName}, created);
         }
 
         [HttpPost("Login")]
-        public async Task<IActionResult> Login(UserProfileDto dto)
+        public async Task<IActionResult> Login(LoginUserProfileDto dto)
         {
-            var loginSuccess = _userProfileService.Login(dto);
+            var userLoginSuccess = _userProfileService.Login(dto);
             
-            if (loginSuccess)
+            if (userLoginSuccess!=null)
             {
-                return CreatedAtAction("GetUser", new {username = dto.Email}, dto);
+                return CreatedAtAction("GetUser", new {username = dto.UserName}, userLoginSuccess);
             }
             
             return Unauthorized();
@@ -54,14 +55,16 @@ namespace WebAPI.Controller
             return Ok();
         }
         
+        [Authorize(Roles = "moderator,admin")]
         [HttpGet("List")]
         public List<UserProfileDto> GetAll()
         {
             return _userProfileService.GetAll();
         }
         
+        [Authorize(Roles = "moderator,admin")]
         [HttpGet("{username}/FindUserByUserName")]
-        public async Task<ActionResult<UserProfileDto>> GetUser([Required] string username)
+        public async Task<ActionResult<UserProfileDto>> GetUser(string username)
         {
             var userDto = _userProfileService.GetUserProfile(username);
             if (userDto == null)
@@ -72,6 +75,7 @@ namespace WebAPI.Controller
             return userDto;
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost("ChangeRole/{username}")]
         public async Task<IActionResult> ChangeUserRole(string username, List<string> userRoles)
         {

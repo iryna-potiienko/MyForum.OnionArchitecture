@@ -15,14 +15,11 @@ namespace Domain.Service
         private readonly RoleMapper _roleMapper;
 
         private readonly RoleRepository _roleRepository;
-        
-        private readonly UserProfileService _userProfileService;
 
-        public RoleService(RoleMapper roleMapper, RoleRepository roleRepository, UserProfileService userProfileService)
+        public RoleService(RoleMapper roleMapper, RoleRepository roleRepository)
         {
             _roleMapper = roleMapper;
             _roleRepository = roleRepository;
-            _userProfileService = userProfileService;
         }
         
         public List<RoleDto> GetAll()
@@ -35,7 +32,7 @@ namespace Domain.Service
         public RoleDto GetRole(string roleName)
         {
             var role = _roleRepository.FindByRoleName(roleName).Result;
-            return _roleMapper.MapToRoleDto(role);
+            return role == null ? null : _roleMapper.MapToRoleDto(role);
         }
 
         public RoleDto CreateRole(RoleDto roleDto)
@@ -49,28 +46,10 @@ namespace Domain.Service
             }
             return _roleMapper.MapToRoleDto(createdRole.Result);
         }
-        
-        // public bool ChangeUserRole(string username, List<string> roles)
-        // {
-        //     // получаем пользователя
-        //     //UserProfile user = _userManager.Users.FirstOrDefault(u => u.UserName == username);
-        //     UserProfileDto user = _userProfileService.GetUserProfile(username);
-        //     if (user == null) return false;
-        //     
-        //     // получем список ролей пользователя
-        //     var userRoles = _userProfileService.GetUserRoles(user);//await _userManager.GetRolesAsync(user);
-        //     // получаем все роли
-        //     //var allRoles = _roleManager.Roles.ToList();
-        //     // получаем список ролей, которые были добавлены
-        //     var addedRoles = roles.Except(userRoles);
-        //     // получаем роли, которые были удалены
-        //     var removedRoles = userRoles.Except(roles);
-        //
-        //     _userProfileService.AddRolesToUser(user, addedRoles); //await _userManager.AddToRolesAsync(user, addedRoles);
-        //
-        //     _userProfileService.RemoveRolesFromUser(user, removedRoles);//await _userManager.RemoveFromRolesAsync(user, removedRoles);
-        //
-        //     return true;
-        // }
+
+        public bool DeleteRole(string roleName)
+        {
+            return _roleRepository.Delete(roleName).Result;
+        }
     }
 }

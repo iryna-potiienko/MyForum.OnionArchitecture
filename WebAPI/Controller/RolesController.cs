@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Domain.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Model.Dto;
@@ -8,128 +10,55 @@ using Model.Model;
 
 namespace WebAPI.Controller
 {
+    [Authorize(Roles = "admin")]
     [Route("[controller]")]
     [ApiController]
     public class RolesController: ControllerBase
     {
-        RoleManager<IdentityRole> _roleManager;
-        UserManager<UserProfile> _userManager;
-        public RolesController(RoleManager<IdentityRole> roleManager, UserManager<UserProfile> userManager)
+        private readonly RoleService _roleService;
+        public RolesController(RoleService roleService)
         {
-            _roleManager = roleManager;
-            _userManager = userManager;
+            _roleService = roleService;
         }
 
         [HttpGet]
-        public List<IdentityRole> GetAll()
+        public List<RoleDto> GetAll()
         {
-            return _roleManager.Roles.ToList();
+            return _roleService.GetAll();
         }
 
-        [HttpPost("{name}")]
-        public async Task<IActionResult> Create(string name)
+        [HttpGet("{roleName}")]
+        public async Task<ActionResult<RoleDto>> GetRole(string roleName)
         {
-            if (!string.IsNullOrEmpty(name))
-            {
-                IdentityResult result = await _roleManager.CreateAsync(new IdentityRole(name));
-                if (result.Succeeded)
-                {
-                    //return RedirectToAction("Index");
-                    return Ok();
-                }
-                else
-                {
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError(string.Empty, error.Description);
-                    }
-                }
-            }
-            return Ok();
+            var role = _roleService.GetRole(roleName);
+            if (role == null) 
+                return NotFound();
+            
+            return role;
+        }
+        
+        [HttpPost]
+        public async Task<ActionResult<RoleDto>> Create(RoleDto roleDto)
+        {
+            if (string.IsNullOrEmpty(roleDto.Name)) return BadRequest();
+            
+            var createdRole = _roleService.CreateRole(roleDto);
+            if (createdRole == null)
+                return BadRequest();
+            
+            return createdRole;
         }
          
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(string id)
+        [HttpDelete("{roleName}")]
+        public async Task<IActionResult> Delete(string roleName)
         {
-            IdentityRole role = await _roleManager.FindByIdAsync(id);
-            if (role != null)
+            var deleted = _roleService.DeleteRole(roleName);
+            if(!deleted)
             {
-                IdentityResult result = await _roleManager.DeleteAsync(role);
+                return NotFound();
             }
-
-            return Ok();
-        }
- 
-        // public async Task<IActionResult> Edit(string userId)
-        // {
-        //     // получаем пользователя
-        //     UserProfile user = await _userManager.FindByIdAsync(userId);
-        //     if (user == null) return NotFound();
-        //     
-        //     // получем список ролей пользователя
-        //     var userRoles = await _userManager.GetRolesAsync(user);
-        //     var allRoles = _roleManager.Roles.ToList();
-        //     ChangeRoleDto model = new ChangeRoleDto()
-        //     {
-        //         UserId = user.Id,
-        //         UserEmail = user.Email,
-        //         UserRoles = userRoles,
-        //         AllRoles = allRoles
-        //     };
-        //     //return View(model);
-        //     return Ok();
-        //
-        // }
-        // [HttpPost]
-        // public async Task<IActionResult> Edit(string userId, List<string> roles)
-        // {
-        //     // получаем пользователя
-        //     UserProfile user = await _userManager.FindByIdAsync(userId);
-        //     if(user!=null)
-        //     {
-        //         // получем список ролей пользователя
-        //         var userRoles = await _userManager.GetRolesAsync(user);
-        //         // получаем все роли
-        //         //var allRoles = _roleManager.Roles.ToList();
-        //         // получаем список ролей, которые были добавлены
-        //         var addedRoles = roles.Except(userRoles);
-        //         // получаем роли, которые были удалены
-        //         var removedRoles = userRoles.Except(roles);
-        //
-        //         await _userManager.AddToRolesAsync(user, addedRoles);
-        //
-        //         await _userManager.RemoveFromRolesAsync(user, removedRoles);
-        //
-        //         //return RedirectToAction("UserList");
-        //     }
-        //
-        //     return NotFound();
-        // }
-
-        [HttpPost("ChangeRole/{username}/{roles}")]
-        public async Task<IActionResult> ChangeUserRole(string username, List<string> roles)
-        {
-            // получаем пользователя
-            UserProfile user = _userManager.Users.FirstOrDefault(u => u.UserName == username);
-            if (user == null) return NotFound();
             
-            // получем список ролей пользователя
-            var userRoles = await _userManager.GetRolesAsync(user);
-            // получаем все роли
-            var allRoles = _roleManager.Roles.ToList();
-            // получаем список ролей, которые были добавлены
-            var addedRoles = roles.Except(userRoles);
-            // получаем роли, которые были удалены
-            var removedRoles = userRoles.Except(roles);
-        
-            await _userManager.AddToRolesAsync(user, addedRoles);
-        
-            await _userManager.RemoveFromRolesAsync(user, removedRoles);
-        
-            //return RedirectToAction("UserList");
-            //return CreatedAtAction("GetChapter", new { id = created.Id }, created);
-            return Ok();
-            //return CreatedAtAction("GetAll","Profile",new{});
-        }
+            return NoContent();
+        } 
     }
 }

@@ -46,13 +46,13 @@ namespace Persistence.Repository
 
         }
 
-        public async Task<bool> LoginUserProfile(UserProfile userProfile, string password)
+        public async Task<UserProfile> LoginUserProfile(UserProfile userProfile, string password)
         {
             var result =
                 await _signInManager
                     .PasswordSignInAsync(userProfile.UserName, password, false, false);
-            
-            return result.Succeeded;
+
+            return result.Succeeded ? userProfile : null;
         }
 
         public async void LogoutUserProfile()

@@ -49,6 +49,7 @@ namespace WebAPI
             services.AddScoped<SubjectService>();
             services.AddScoped<MessageService>();
             services.AddScoped<UserProfileService>();
+            services.AddScoped<RoleService>();
         }
 
         private static void InitRepositories(IServiceCollection services)
@@ -57,6 +58,7 @@ namespace WebAPI
             services.AddScoped<SubjectRepository>();
             services.AddScoped<MessageRepository>();
             services.AddScoped<UserProfileRepository>();
+            services.AddScoped<RoleRepository>();
         }
 
         private static void InitMappers(IServiceCollection services)
@@ -65,6 +67,7 @@ namespace WebAPI
             services.AddScoped<SubjectMapper>();
             services.AddScoped<MessageMapper>();
             services.AddScoped<UserProfileMapper>();
+            services.AddScoped<RoleMapper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -2,11 +2,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Domain.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Model.Dto;
 
 namespace WebAPI.Controller
 {
+    [Authorize]
     [Route("[controller]")]
     [ApiController]
     public class SubjectController : ControllerBase
@@ -31,12 +33,14 @@ namespace WebAPI.Controller
             return CreatedAtAction("GetSubject", new { id = created.Id }, created);
         }
         
+        [AllowAnonymous]
         [HttpGet("List")]
         public List<SubjectDto> GetCAll()
         {
             return _subjectService.GetAll();
         }
         
+        [AllowAnonymous]
         [HttpGet("{id:int}")]
         public async Task<ActionResult<SubjectDto>> GetSubject([Required] int id)
         {
@@ -49,6 +53,7 @@ namespace WebAPI.Controller
             return subjectDto;
         }
 
+        [Authorize(Roles = "moderator,admin")]
         [HttpPut("{id}/Update")]
         public async Task<IActionResult> PutSubject(int id, [Required] SubjectDto chapterDto)
         {
@@ -60,8 +65,8 @@ namespace WebAPI.Controller
 
             return NoContent();
         }
-
-
+        
+        [Authorize(Roles = "moderator,admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSubject(int id)
         {
